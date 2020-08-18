@@ -1,7 +1,6 @@
 //* imports
 const mc = require('minecraft-protocol');
 const config = require('./config.json');
-const { username, password } = require('./secret.json');
 const { ini, input, login } = require('./src/logic');
 const log = require('./src/log');
 
