@@ -28,16 +28,17 @@ function input(packet) {
 
 	switch (meta.name) {
 		case 'map_chunk':
-			saveChunkPackets(packet, map_chunk); //! temp
+			// saveChunkPackets(packet, map_chunk); //! temp
 			//TODO save to world object - Done
+			log(packet);
 			saveChunk(packet);
 			break;
 		case 'unload_chunk':
-			unload_chunk_packets(data);
+			// unload_chunk_packets(data);
 			unload_chunk(data);
 			break;
 		case 'block_change':
-			saveChunkPackets(packet, block_change); //! temp
+			// saveChunkPackets(packet, block_change); //! temp
 			applyBlockChange(data);
 			break;
 		//TODO add Entity storage
@@ -47,8 +48,9 @@ function input(packet) {
 				meta.name == 'update_time'
 			) {
 				savePacket(packet);
-				break;
 			}
+
+			break;
 	}
 }
 
@@ -86,12 +88,12 @@ function unload_chunk_packets(data) {
 
 //* good storage
 function saveChunk(packet) {
-	var { x, z, bitMap, chunkData } = packet.data;
+	var { x, z, bitMap, chunkData, fullChunk, skyLightSent } = packet.data;
 	if (!chunks[x]) {
 		chunks[x] = [];
 	}
 	var chunk = new Chunk(config.version);
-	chunk.load(chunkData, bitMap);
+	chunk.load(chunkData, bitMap, skyLightSent, fullChunk);
 	chunks[x][z] = chunk;
 }
 function unload_chunk(data) {
@@ -148,11 +150,6 @@ function buildChunkPacket({ x, z, chunk }) {
 		chunkData: chunk.dump(),
 		blockEntities: [],
 	};
-	log(map_chunk[x][z]);
-	log({ data, meta });
-	log(
-		'---------------------------------------------------------------------------------------'
-	);
 	return { data, meta };
 }
 function relay(packet) {
@@ -172,7 +169,9 @@ function repeatLog(newProxyClient) {
 			for (const z in arr) {
 				if (arr.hasOwnProperty(z)) {
 					const chunk = arr[z];
-					send(buildChunkPacket({ x, z, chunk }), newProxyClient);
+					if (chunk) {
+						send(buildChunkPacket({ x, z, chunk }), newProxyClient);
+					}
 				}
 			}
 		}
