@@ -1,0 +1,27 @@
+{
+  "name": "2b2tproxy",
+  "version": "1.0.0",
+  "description": "a proxy for 2b2t and stuff",
+  "main": "main.js",
+  "dependencies": {
+    "minecraft-protocol": "^1.16.0",
+    "prismarine-chunk": "^1.20.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rob9315/2b2tproxy.git"
+  },
+  "keywords": [
+    "2b2t"
+  ],
+  "author": "Rob9315",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rob9315/2b2tproxy/issues"
+  },
+  "homepage": "https://github.com/Rob9315/2b2tproxy#readme"
+}

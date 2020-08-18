@@ -2,7 +2,6 @@ module.exports = { ini, input, login };
 
 //* import
 const config = require('../config.json');
-const World = require('prismarine-world')(config.version);
 const Chunk = require('prismarine-chunk')(config.version);
 const Vec3 = require('vec3');
 const log = require('./log');
