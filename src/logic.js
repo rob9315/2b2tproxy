@@ -164,13 +164,19 @@ function repeatLog(newProxyClient) {
 	updatePackets.forEach(({ data, meta }) => {
 		newProxyClient.write(meta.name, data);
 	});
-	chunks.forEach((arr, x) =>
-		arr.forEach((chunk, z) => {
-			if (chunk) {
-				send(buildChunkPacket({ x, z, chunk }), newProxyClient);
+
+	//* because forEach is apparently not good enough >:[
+	for (const x in chunks) {
+		if (chunks.hasOwnProperty(x)) {
+			const arr = chunks[x];
+			for (const z in arr) {
+				if (arr.hasOwnProperty(z)) {
+					const chunk = arr[z];
+					send(buildChunkPacket({ x, z, chunk }), newProxyClient);
+				}
 			}
-		})
-	);
+		}
+	}
 }
 
 //* helper function(s)
