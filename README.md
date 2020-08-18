@@ -2,6 +2,7 @@
 A proxy to wait out 2b2t's queue among other uses
 
 # ALL WIP
+for testing (install node.js), clone and build with 'npm install', vscode launch file included
 
 # CREDIT
 thanks for the idea and approach from 2bored2wait and the entire PrisnarineJS team for their awesome project and help with this
