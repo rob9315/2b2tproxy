@@ -1,4 +1,5 @@
 module.exports = { ini, input, login };
+// commit test
 
 //* import
 const config = require('../config.json');
