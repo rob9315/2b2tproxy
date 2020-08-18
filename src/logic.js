@@ -148,10 +148,11 @@ function buildChunkPacket({ x, z, chunk }) {
 		chunkData: chunk.dump(),
 		blockEntities: [],
 	};
-	log('builtpacket');
-	log(data);
-	log('original');
-	log(map_chunk[x][z].data);
+	log(map_chunk[x][z]);
+	log({ data, meta });
+	log(
+		'---------------------------------------------------------------------------------------'
+	);
 	return { data, meta };
 }
 function relay(packet) {
