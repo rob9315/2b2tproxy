@@ -89,7 +89,7 @@ function saveChunk(packet) {
 	if (!chunks[x]) {
 		chunks[x] = [];
 	}
-	var chunk = new Chunk(config.version);
+	var chunk = new Chunk();
 	chunk.load(chunkData, bitMap, skyLightSent, fullChunk);
 	chunks[x][z] = chunk;
 }
