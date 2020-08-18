@@ -30,7 +30,6 @@ function input(packet) {
 		case 'map_chunk':
 			// saveChunkPackets(packet, map_chunk); //! temp
 			//TODO save to world object - Done
-			log(packet);
 			saveChunk(packet);
 			break;
 		case 'unload_chunk':
@@ -56,11 +55,8 @@ function input(packet) {
 
 //* sends login information to the proxyClient
 function login(newProxyClient) {
-	if (config.backup) {
-		repeatPackets(newProxyClient);
-	} else {
-		repeatLog(newProxyClient);
-	}
+	//repeatPackets(newProxyClient)
+	repeatLog(newProxyClient);
 	newProxyClient.on('packet', (data, meta) => send({ data, meta }, client));
 	proxyClient = newProxyClient;
 	newProxyClient.on('end', () => {
@@ -139,7 +135,6 @@ function repeatPackets(newProxyClient) {
 }
 
 //* good sending
-//TODO something's wrong, I can see it
 function buildChunkPacket({ x, z, chunk }) {
 	var meta = { name: 'map_chunk' };
 	var data = {
