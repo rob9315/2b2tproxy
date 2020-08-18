@@ -29,16 +29,16 @@ function input(packet) {
 
 	switch (meta.name) {
 		case 'map_chunk':
-			saveChunkPackets(packet, map_chunk); //! temp
+			// saveChunkPackets(packet, map_chunk); //! temp
 			//TODO save to world object - Done
 			saveChunk(packet);
 			break;
 		case 'unload_chunk':
-			unload_chunk_packets(data);
+			// unload_chunk_packets(data);
 			unload_chunk(data);
 			break;
 		case 'block_change':
-			saveChunkPackets(packet, block_change); //! temp
+			// saveChunkPackets(packet, block_change); //! temp
 			applyBlockChange(data);
 			break;
 		//TODO add Entity storage
@@ -48,18 +48,16 @@ function input(packet) {
 				meta.name == 'update_time'
 			) {
 				savePacket(packet);
-				break;
 			}
+
+			break;
 	}
 }
 
 //* sends login information to the proxyClient
 function login(newProxyClient) {
-	if (config.backup) {
-		repeatPackets(newProxyClient);
-	} else {
-		repeatLog(newProxyClient);
-	}
+	//repeatPackets(newProxyClient)
+	repeatLog(newProxyClient);
 	newProxyClient.on('packet', (data, meta) => send({ data, meta }, client));
 	proxyClient = newProxyClient;
 	newProxyClient.on('end', () => {
@@ -87,12 +85,12 @@ function unload_chunk_packets(data) {
 
 //* good storage
 function saveChunk(packet) {
-	var { x, z, bitMap, chunkData } = packet.data;
+	var { x, z, bitMap, chunkData, fullChunk, skyLightSent } = packet.data;
 	if (!chunks[x]) {
 		chunks[x] = [];
 	}
 	var chunk = new Chunk(config.version);
-	chunk.load(chunkData, bitMap);
+	chunk.load(chunkData, bitMap, skyLightSent, fullChunk);
 	chunks[x][z] = chunk;
 }
 function unload_chunk(data) {
@@ -138,7 +136,6 @@ function repeatPackets(newProxyClient) {
 }
 
 //* good sending
-//TODO something's wrong, I can see it
 function buildChunkPacket({ x, z, chunk }) {
 	var meta = { name: 'map_chunk' };
 	var data = {
@@ -149,10 +146,6 @@ function buildChunkPacket({ x, z, chunk }) {
 		chunkData: chunk.dump(),
 		blockEntities: [],
 	};
-	log('builtpacket');
-	log(data);
-	log('original');
-	log(map_chunk[x][z].data);
 	return { data, meta };
 }
 function relay(packet) {
@@ -164,13 +157,21 @@ function repeatLog(newProxyClient) {
 	updatePackets.forEach(({ data, meta }) => {
 		newProxyClient.write(meta.name, data);
 	});
-	chunks.forEach((arr, x) =>
-		arr.forEach((chunk, z) => {
-			if (chunk) {
-				send(buildChunkPacket({ x, z, chunk }), newProxyClient);
+
+	//* because forEach is apparently not good enough >:[
+	for (const x in chunks) {
+		if (chunks.hasOwnProperty(x)) {
+			const arr = chunks[x];
+			for (const z in arr) {
+				if (arr.hasOwnProperty(z)) {
+					const chunk = arr[z];
+					if (chunk) {
+						send(buildChunkPacket({ x, z, chunk }), newProxyClient);
+					}
+				}
 			}
-		})
-	);
+		}
+	}
 }
 
 //* helper function(s)
