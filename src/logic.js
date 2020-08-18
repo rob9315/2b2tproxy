@@ -8,6 +8,7 @@ const Vec3 = require('vec3');
 const log = require('./log');
 
 //* storage variables
+var dimension;
 var chunks = [];
 var updatePackets = [];
 var proxyClient;
@@ -50,6 +51,15 @@ function input(packet) {
 				savePacket(packet);
 			}
 
+			switch (meta.name) {
+				case 'login':
+					setDimension(data);
+					savePacket(packet);
+					break;
+				case 'respawn':
+					setDimension(data);
+					break;
+			}
 			break;
 	}
 }
@@ -85,12 +95,12 @@ function unload_chunk_packets(data) {
 
 //* good storage
 function saveChunk(packet) {
-	var { x, z, bitMap, chunkData, fullChunk, skyLightSent } = packet.data;
+	var { x, z, bitMap, chunkData, groundUp } = packet.data;
 	if (!chunks[x]) {
 		chunks[x] = [];
 	}
 	var chunk = new Chunk();
-	chunk.load(chunkData, bitMap, skyLightSent, fullChunk);
+	chunk.load(chunkData, bitMap, dimension, groundUp);
 	chunks[x][z] = chunk;
 }
 function unload_chunk(data) {
@@ -207,4 +217,11 @@ function _exists(x, z, arr) {
 		return true;
 	}
 	return false;
+}
+function setDimension(data) {
+	dimension = {
+		'-1': 'minecraft:nether',
+		0: 'minecraft:overworld',
+		1: 'minecraft:the_end',
+	}[data.dimension];
 }
