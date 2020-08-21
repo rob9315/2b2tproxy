@@ -19,26 +19,5 @@
 		"compress",
 		"success",
 		"update_time"
-	],
-	"specialPackets": [
-		"map_chunk",
-		"unload_chunk",
-		"block_change",
-		"game_state_change",
-		"respawn",
-		"world_border",
-		"update_time",
-		"spawn_position",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
 	]
 }
