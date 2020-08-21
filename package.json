@@ -5,7 +5,8 @@
   "main": "main.js",
   "dependencies": {
     "minecraft-protocol": "^1.16.0",
-    "prismarine-chunk": "^1.20.3"
+    "prismarine-chunk": "^1.20.3",
+    "prismarine-world": "^3.1.0"
   },
   "devDependencies": {},
   "scripts": {
