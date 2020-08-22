@@ -10,7 +10,8 @@
 		"encryption": true,
 		"host": "0.0.0.0",
 		"port": 25566,
-		"max-players": "maxPlayers = 1"
+		"max-players": "maxPlayers = 1",
+		"version": "1.12.2"
 	},
 	"version": "1.12.2",
 	"bad_packets": [
