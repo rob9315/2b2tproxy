@@ -11,6 +11,7 @@ const { saveChunk } = require('./functions');
 //* storage variables
 var world = World();
 var client;
+var entities = [];
 
 function ini(c) {
 	client = c;
@@ -42,6 +43,11 @@ function input(packet) {
 			break;
 		case 'update_time':
 			savePacket();
+		case 'entity_status':
+			saveEntityData();
+			break;
+		case 'entity_metadata':
+			break;
 		default:
 			if (!config.bad_packets.includes(meta.name)) {
 				saveData(data);
@@ -189,5 +195,18 @@ function savePacket({ data, meta }) {
 	});
 	if (toadd) {
 		client.packets.push({ data, meta });
+	}
+}
+
+function saveEntityData(data) {
+	var { entityId } = data;
+	if (!entities[entityId]) {
+		entities[entityId] = {};
+	}
+	for (const info in data) {
+		if (data.hasOwnProperty(info)) {
+			const element = data[info];
+			entities[entityId][info] = element;
+		}
 	}
 }
